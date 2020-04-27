@@ -1,28 +1,33 @@
-﻿@model IEnumerable<Asp.netCoreMVCCRUD.Models.Superhero>
+﻿@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+@model PagingList<Superhero>
 
 @{
-    ViewData["Title"] = "Superhero List <3";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Superhero List </h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Add">Add New</a>
+    <a asp-action="Create">Create New</a>
 </p>
-
 <form asp-controller="Superhero" asp-action="Index">
     <p>
         Buscar: <input type="text" name="SearchString">
         <input type="submit" value="Filter" />
     </p>
 </form>
+Total Record Count: @Model.TotalRecordCount
+<nav aria-label="Products navigation example">
+    <vc:pager paging-list="@Model"></vc:pager>
+</nav>
+
+
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SuperheroId)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -39,9 +44,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SuperheroId)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -60,3 +62,8 @@
         }
     </tbody>
 </table>
+
+<nav aria-label="Products navigation example">
+    <vc:pager paging-list="@Model" />
+</nav>
+

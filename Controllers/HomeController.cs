@@ -18,6 +18,11 @@ namespace Asp.netCoreMVCCRUD.Controllers
             _logger = logger;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+
+        }
 
         public IActionResult Privacy()
         {

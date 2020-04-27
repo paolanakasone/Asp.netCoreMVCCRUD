@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Asp.netCoreMVCCRUD.Models;
+using ReflectionIT.Mvc.Paging;
 
 namespace Asp.netCoreMVCCRUD.Controllers
 {
     public class SuperheroController : Controller
     {
+    
         private readonly SuperheroContext _context;
 
         public SuperheroController(SuperheroContext context)
@@ -18,21 +20,23 @@ namespace Asp.netCoreMVCCRUD.Controllers
             _context = context;
         }
 
-        // GET: Superhero
-        public async Task<IActionResult> Index(string searchString)
+
+
+        public IActionResult Index(int pageindex = 1, string sort = "Name", string searchString = null)
         {
-                       
-                var superheros = from s in _context.Superhero
+
+
+            var superheros = from s in _context.Superhero
                              select s;
 
-                if (!String.IsNullOrEmpty(searchString))
-                {
-                superheros = superheros.Where(s => (s.Name.Contains(searchString) || s.Power.Contains(searchString) || s.Editorial.Contains(searchString)) );
-                }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                superheros = superheros.Where(s => (s.Name.Contains(searchString) || s.Power.Contains(searchString) || s.Editorial.Contains(searchString)));
+            }
 
-                return View(await superheros.ToListAsync());
-            
-          //  return View(await _context.Superhero.ToListAsync());
+            var model = PagingList.Create(superheros, 10, pageindex, sort, "Name");
+
+            return View(model);
         }
 
         // GET: Superhero/Details/5
@@ -54,7 +58,7 @@ namespace Asp.netCoreMVCCRUD.Controllers
         }
 
         // GET: Superhero/Add
-        public IActionResult Add()
+        public IActionResult Create()
         {
             return View();
         }
@@ -64,7 +68,7 @@ namespace Asp.netCoreMVCCRUD.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("SuperheroId,Name,Power,Editorial")] Superhero superhero)
+        public async Task<IActionResult> Create([Bind("SuperheroId,Name,Power,Editorial")] Superhero superhero)
         {
             if (ModelState.IsValid)
             {
@@ -161,3 +165,5 @@ namespace Asp.netCoreMVCCRUD.Controllers
         }
     }
 }
+
+   
