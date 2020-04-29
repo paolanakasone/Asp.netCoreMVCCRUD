@@ -122,7 +122,7 @@ namespace Asp.netCoreMVCCRUD.Controllers
                     }
                     else
                     {
-                        throw;
+                        throw; 
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -146,6 +146,7 @@ namespace Asp.netCoreMVCCRUD.Controllers
             }
 
             return View(superhero);
+
         }
 
         // POST: Superhero/Delete/5
